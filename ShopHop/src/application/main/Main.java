@@ -1,29 +1,32 @@
 package application.main;
 
-import java.io.FileReader;
-import java.io.FileWriter;
+// Importar lo relacionado con lectura y escritura
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-
-import application.model.Usuario;
+// Importar clases del paquete modelo
+import application.model.*;
 
 public class Main {
-	static Scanner sc = new Scanner(System.in);
+	// Atributos
+	public static Scanner sc = new Scanner(System.in);
+	public static Admin admin1;
 
+	// Métodos
 	public static void main(String[] args) {
+		// Admin
+		admin1 = new Admin("GERENTEMERCADONA", "123456789", "Calle callal", "123456789");
+		
 		int opcion = 0;
 		while(opcion!=3) {
+			// Imprimir menú
 			System.out.println("BIENVENIDO A SHOP-HOP");
 			System.out.println("¿QUE DESEA HACER?");
 			System.out.println("1.Iniciar Sesión");
 			System.out.println("2.Registrarse");
 			System.out.println("3.Salir");
-			opcion = sc.nextInt();
+			// Verificar que el valor ingresado es numérico entero
+			opcion = AlmacenamientoDatos.esInt();
 			
 			switch (opcion) {
 			case 1:
@@ -32,90 +35,82 @@ public class Main {
 			case 2:
 				registroUser();
 				break;
-				
 			case 3:
 				System.out.println("ADIOS");
 				break;
-	
 			default:
-				System.out.println("Opción no válida");
+				System.out.println("- - - Opción no válida - - -");
 				break;
 			}
-	
 		}
 	}
 
 	private static void registroUser() {
-		String nombre;
+		String nombreUsuario;
 		String psw;
 		String direccion;
 		String telefono;
-		ArrayList<Usuario> listaUsers = leerJson();
+		boolean esRepetido = false;
+		ArrayList<Usuario> listaUsers = AlmacenamientoDatos.leerUsuariosJson();
 		System.out.println("***REGISTRO***");
-		System.out.println("Introduzca su nombre:");
-		nombre = sc.next();
-		System.out.println("Introduzca su contraseña");
-		psw = sc.next();
-		System.out.println("Introduzca su dirección");
-		direccion = sc.next();
-		System.out.println("Introduzca su telefono");
-		telefono = sc.next();
+		System.out.print("Introduzca su nombre:\n->");
+		nombreUsuario = sc.next();
+		// Pasamos el nombre a mayúsculas para manejar errores
+		nombreUsuario = nombreUsuario.toUpperCase();
 		
-		Usuario u = new Usuario(nombre, psw, direccion, telefono);
-		
-		listaUsers.add(u);
-		
-		escribirJson(listaUsers);
-		
-		System.out.println("Usario registrado correctamente");
-	}
-
-	private static void escribirJson(ArrayList<Usuario> listaUsers) {
-		Gson g = new GsonBuilder().setPrettyPrinting().create();
-		
-		try(FileWriter w = new FileWriter("Data/Usuarios.json")){
-			g.toJson(listaUsers,w);
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-	}
-
-	private static ArrayList<Usuario> leerJson() {
-		Gson g = new Gson();
-		ArrayList<Usuario> listaUsuarios = new ArrayList<>();
-		try (FileReader r = new FileReader("Data/Usuarios.json")){
-			java.lang.reflect.Type lista = new TypeToken<ArrayList<Usuario>>() {}.getType();
-			listaUsuarios = g.fromJson(r, lista);
-			if(listaUsuarios == null) {
-				listaUsuarios = new ArrayList<>();
+		// Bucle que comprueba que el nombre ingresado no se haya registrado previamente
+		for (int i = 0; i < listaUsers.size(); i++) {
+			Usuario u = listaUsers.get(i);
+			if(u.getNombre().equals(nombreUsuario)) {
+				System.out.println("- - - El nombre de usuario " + u.getNombre() + " ya se ha registrado previamente - - -");
+				esRepetido = true;
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
-		return listaUsuarios;
+		
+		if(!esRepetido) {
+			System.out.print("Introduzca su contraseña:\n->");
+			psw = sc.next();
+			System.out.print("Introduzca su dirección:\n->");
+			direccion = sc.next();
+			System.out.print("Introduzca su teléfono:\n->");
+			telefono = sc.next();
+			
+			Usuario u = new Usuario(nombreUsuario, psw, direccion, telefono);
+			
+			listaUsers.add(u);
+			
+			AlmacenamientoDatos.escribirUsuariosJson(listaUsers);
+			
+			System.out.println("- - - Usario registrado correctamente - - -");
+		}
 	}
 
 	private static void inicioSesion() {
 		boolean esCorrecto = false;
-		System.out.println("Introduce tu nombre de usuario");
+		System.out.print("Introduce tu nombre de usuario:\n->");
 		String user = sc.next();
-		System.out.println("Introduce tu contraseña");
+		// Pasamos el nombre a mayúsculas para manejar errores
+		user = user.toUpperCase();
+		System.out.print("Introduce tu contraseña:\n->");
 		String psw = sc.next();
 		
-		ArrayList<Usuario> listaUser = leerJson();
-		
-		for (int i = 0; i < listaUser.size(); i++) {
-			Usuario u = listaUser.get(i);
-			if(u.getNombre().equals(user) & u.getPsw().equals(psw)) {
-				System.out.println("Bienvenido "+u.getNombre());
-				esCorrecto = true;
+		// If que comprueba si es el admin el que esta iniciando sesión
+		if (user.equals(admin1.getNombre()) && psw.equals(admin1.getPsw())) {admin1.menuAdministrador();}
+		else {
+			ArrayList<Usuario> listaUsers = AlmacenamientoDatos.leerUsuariosJson();
+			
+			// Bucle que comprueba que la información ingresada es correcta
+			for (int i = 0; i < listaUsers.size(); i++) {
+				Usuario u = listaUsers.get(i);
+				if(u.getNombre().equals(user) & u.getPsw().equals(psw)) {
+					System.out.println("Bienvenido " + u.getNombre());
+					esCorrecto = true;
+					u.showUserMenu();
+				}
+			}
+			if(!esCorrecto) {
+				System.out.println("- - - Usuario o contraseña incorrecta - - -");
 			}
 		}
-		
-		if(!esCorrecto) {
-			System.out.println("Usuario o contraseña incorrecta");
-		}
 	}
-
 }

@@ -1,14 +1,8 @@
 [
   {
-    "nombre": "Joseph",
-    "psw": "1234",
-    "direccion": "calle",
-    "telefono": "1"
-  },
-  {
-    "nombre": "diego",
+    "nombre": "DIEGO",
     "psw": "123",
-    "direccion": "q",
-    "telefono": "q"
+    "direccion": "CasaMadrid",
+    "telefono": "343878999"
   }
 ]
