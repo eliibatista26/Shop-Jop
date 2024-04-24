@@ -3,6 +3,8 @@
     "nombre": "DIEGO",
     "psw": "123",
     "direccion": "CasaMadrid",
-    "telefono": "343878999"
+    "telefono": "343555676",
+    "comprasTotales": 1,
+    "dineroGastado": 22.65
   }
 ]

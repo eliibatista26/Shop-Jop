@@ -5,7 +5,7 @@ public class Producto {
 	public String nombre;
 	private float precio;
 	private int id;
-	private int vecesComprado;
+	private int vecesComprado;	// Globalmente no por Usuario
 	// Métodos
 		// Constructor
 	public Producto(String _nombre, float _precio, int _id) {
@@ -20,4 +20,7 @@ public class Producto {
 	public float getPrecio() {return precio;}
 	public int getVecesComprado() {return vecesComprado;}
 	public int getID() {return id;}
+	
+		// Setters
+	public void setVecesComprado(int nuevasVeces) {vecesComprado = nuevasVeces;}
 }

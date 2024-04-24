@@ -66,6 +66,43 @@ public class AlmacenamientoDatos {
 		}
 	}
 	
+	// Lectura de la Cesta del archivo Json
+	public static ArrayList<Producto> leerProductoCestaJson(String ruta) {
+		Gson g = new Gson();
+		ArrayList<Producto> listaProductosCesta = new ArrayList<>();
+		try (FileReader r = new FileReader(ruta)){
+			java.lang.reflect.Type lista = new TypeToken<ArrayList<Producto>>() {}.getType();
+			listaProductosCesta = g.fromJson(r, lista);
+			if(listaProductosCesta == null) {
+				listaProductosCesta = new ArrayList<>();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listaProductosCesta;
+	}
+	
+	// Escritura de la Cesta del archivo Json
+	public static void escribirProductoCestaJson(String ruta, ArrayList<Producto> listaProductosCesta) {
+		Gson g = new GsonBuilder().setPrettyPrinting().create();
+		
+		try(FileWriter w = new FileWriter(ruta)){
+			g.toJson(listaProductosCesta, w);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	// Vaciar la Cesta del archivo Json
+	public static void vaciarProductoCestaJson(String ruta) {
+		Gson g = new GsonBuilder().setPrettyPrinting().create();
+		
+		try(FileWriter w = new FileWriter(ruta)){
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	// Clase esInt que asegura que lo introducido por el usuario es un entero
 	// en caso no serlo, lo pedirá otra vez
 	public static int esInt() {

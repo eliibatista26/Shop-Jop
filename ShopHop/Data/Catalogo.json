@@ -9,6 +9,12 @@
     "nombre": "Arroz",
     "precio": 0.85,
     "id": 2,
-    "vecesComprado": 0
+    "vecesComprado": 1
+  },
+  {
+    "nombre": "Carne",
+    "precio": 10.9,
+    "id": 3,
+    "vecesComprado": 2
   }
 ]
