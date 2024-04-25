@@ -273,16 +273,33 @@ public class Usuario {
 	 */
 	public float getDineroGastado() {return dineroGastado;}
 
-	
+	/**
+	 * Método que establece el nombre del usuario
+	 */
 	public void setNombre(String nombre) {this.nombre = nombre;}
 	
+	/**
+	 * Método que establece la contraseña del usuario
+	 */
 	public void setPsw(String psw) {this.psw = psw;}
 
+	/**
+	 * Método que establece la dirección del usuario
+	 */
 	public void setDireccion(String direccion) {this.direccion = direccion;}
 	
+	/**
+	 * Método que establece el teléfono del usuario
+	 */
 	public void setTelefono(String telefono) {this.telefono = telefono;}
 	
+	/**
+	 * Método que establece las compras totales del usuario
+	 */
 	public void setComprasTotales(int nuevasCompasTotales) {comprasTotales = nuevasCompasTotales;}
 	
+	/**
+	 * Método que establece las compras totales del usuario
+	 */
 	public void setDineroGastado(float nuevoDineroGastado) {dineroGastado = nuevoDineroGastado;}
 }
