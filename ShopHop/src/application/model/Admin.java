@@ -3,23 +3,40 @@ package application.model;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ *
+ *@author Diego Diaz, Pablo Embil, Joseph Vasquez, Elizabeth Nuñez
+ *@version 1.0
+ *
+ */
+
 public class Admin {
-	// Atributos
+	/**
+	 *@param nombre El parámetro nombre define el nombre de usuario del administrador
+	 *@param psw El parámetro psw define la contraseña del administrador
+	 *@param dirección El parámetro dirección define la dirección de correo del administrador
+	 *@param telefono El parámetro telefono define el telefono del administrador
+	 */
 	private String nombre;
 	private String psw;
 	private String direccion;
 	private String telefono;
 	
-	// Métodos
-		// Constructor
+	
+	/**
+	 * Constructor el administrador
+	 */
 	public Admin(String nombre, String psw, String direccion, String telefono) {
 		this.nombre = nombre;
 		this.psw = psw;
 		this.direccion = direccion;
 		this.telefono = telefono;
-	}
+	} // Cierre del Constructor
 	
-		// Menú Administrador
+	
+	/**
+	 * Método que genera el menú del administrador
+	 */
 	public void menuAdministrador() {
 		int opcion = 0;
 		do {
@@ -50,8 +67,11 @@ public class Admin {
 				break;
 			}
 		}while (opcion != 4);
-	}
+	} //Cierre del método menuAdministrador()
 	
+	/**
+	 * Método que agrega el producto del catálogo
+	 */
 	private void agregarProductoCatalogo() {
 		Scanner scAdmin = new Scanner(System.in);
 		boolean esRepetidoNombre = false, esRepetidoId = false;
@@ -59,7 +79,7 @@ public class Admin {
 		
 		System.out.print("Introduzca el nombre del producto\n->");
 		String nombreProducto = scAdmin.next();
-		// Bucle que comprueba que el nombre del Producto ingresado no se haya registrado previamente
+		// Bucle que comprueba que el nombre del producto ingresado no se haya registrado previamente
 		for (int i = 0; i < listaProducts.size(); i++) {
 			if(listaProducts.get(i).getNombre().toUpperCase().equals(nombreProducto.toUpperCase())) {
 				System.out.println("- - - El nombre del producto " + listaProducts.get(i).getNombre() + " ya se ha registrado previamente - - -");
@@ -72,7 +92,7 @@ public class Admin {
 			System.out.print("Introduzca el id del producto\n");
 			int idProducto = AlmacenamientoDatos.esInt();
 			
-			// Bucle que comprueba que el id del Producto ingresado no se haya registrado previamente
+			// Bucle que comprueba que el id del producto ingresado no se haya registrado previamente
 			for (int i = 0; i < listaProducts.size(); i++) {
 				if(listaProducts.get(i).getID() == idProducto) {
 					System.out.println("- - - El id del producto " + listaProducts.get(i).getID() + " ya se ha registrado previamente para el producto " + listaProducts.get(i).getNombre() + " - - -");
@@ -84,14 +104,18 @@ public class Admin {
 				Producto p = new Producto(nombreProducto, precio, idProducto);
 				listaProducts.add(p);
 				
-				// Agregar Producto al archivo Json
+				// Agregar producto al archivo Json
 				AlmacenamientoDatos.escribirCatalogoJson(listaProducts);
 				
 				System.out.println("- - - Producto Agregado con Éxito - - -");
 			}
 		}
-	}
+	} //Cierre del método AgregarProductoCatálogo()
 
+	/**
+	 * Método que te muestra las compras totales
+	 * @return Las compras totales
+	 */
 	public void verComprasTotales() {
 		ArrayList<Producto> listaProducts = AlmacenamientoDatos.leerCatalogoJson();
 		
@@ -100,8 +124,12 @@ public class Admin {
 			System.out.println(listaProducts.get(i).getID() + ":" + listaProducts.get(i).nombre + " - Veces Comprado: " + listaProducts.get(i).getVecesComprado());
 		}
 		System.out.println();
-	}
+	} //Cierre del método verComprasTotales()
 	
+	/**
+	 * Método que te muestra todos los usuarios registrados
+	 * @return Todos los usuarios registrados
+	 */
 	public void verUsuariosRegistrados() {
 		ArrayList<Usuario> listaUsers = AlmacenamientoDatos.leerUsuariosJson();
 		
@@ -110,21 +138,36 @@ public class Admin {
 			System.out.println((i + 1) + ". " + listaUsers.get(i).getNombre() + " - Teléfono: " + listaUsers.get(i).getTelefono() + " - Dirección: " + listaUsers.get(i).getDireccion() + " - N° de Compras: " + listaUsers.get(i).getComprasTotales() + " - Dinero Gastado: " + listaUsers.get(i).getDineroGastado());
 		}
 		System.out.println();
-	}
+	} //Cierre del método verUsuariosRegistrados()
 
-		// Getters
+	/**
+	 * Método que te retorna el nombre de usuario del administrador
+	 * @return Nombre de usuario del administrador
+	 */
 	public String getNombre() {
 		return nombre;
 	}
 
+	/**
+	 * Método que te retorna la contraseña del administrador
+	 * @return Contraseña del administrador
+	 */
 	public String getPsw() {
 		return psw;
 	}
 
+	/**
+	 * Método que te retorna la dirección de correo del administrador
+	 * @return Dirección de correo del administrador
+	 */
 	public String getDireccion() {
 		return direccion;
 	}
 
+	/**
+	 * Método que te retorna el teléfono del administrador
+	 * @return Teléfono del administrador
+	 */
 	public String getTelefono() {
 		return telefono;
 	}

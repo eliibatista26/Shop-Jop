@@ -12,17 +12,32 @@ import java.io.IOException;
 // Aproximar a 2 decimales
 import java.text.DecimalFormat;
 
+/**
+*
+*@author Diego Diaz, Pablo Embil, Joseph Vasquez, Elizabeth Nuñez
+*@version 1.0
+*
+*/
+
 public class Usuario {
-	// Atributos
+	/**
+	 *@param nombre El parámetro nombre define el nombre de usuario del usuario
+	 *@param psw El parámetro psw define la contraseña del usuario
+	 *@param dirección El parámetro dirección define la dirección de correo del usuario
+	 *@param telefono El parámetro telefono define el telefono del usuario
+	 *@param comprasTotales El parámetro comprasTotales define el nº compras totales del usuario
+	 *@param dineroGastado El parámetro dineroGastado define el dinero gastado en total por el usuario
+	 */
 	private String nombre;
 	private String psw;
 	private String direccion;
 	private String telefono;
-	private int comprasTotales;		// N° de compras realizadas por el usuarios
-	private float dineroGastado;	// Dinero gastado en total en todas las compras
+	private int comprasTotales;
+	private float dineroGastado;
 	
-	// Métodos
-		// Constructor
+	/**
+	 * Constructor el producto
+	 */
 	public Usuario(String nombre, String psw, String direccion, String telefono) {
 		this.nombre = nombre;
 		this.psw = psw;
@@ -36,9 +51,11 @@ public class Usuario {
         } catch (IOException e) {
             e.printStackTrace();
         }
-	}
+	} // Cierre del Constructor
 	
-		// Mostrar menú usuario
+	/**
+	 * Método que muestra el menú del usuario
+	 */
 	public void showUserMenu() {
 		int opcion = 0;
 		do {
@@ -75,9 +92,12 @@ public class Usuario {
 				break;
 			}
 		} while (opcion != 6);
-	}
+	} //Cierre del método showUserMenu()
 	
-		// Imprimir catálogo
+	/**
+	 * Método que muestra el cátalogo
+	 * @return Catálogo de productos
+	 */
 	public void showCatalogue() {
 		ArrayList<Producto> listaProducts = AlmacenamientoDatos.leerCatalogoJson();
 		
@@ -85,8 +105,11 @@ public class Usuario {
 		for (int i = 0; i < listaProducts.size(); i++) {
 			System.out.println(listaProducts.get(i).nombre + " - " + listaProducts.get(i).getPrecio() + " €");
 		}
-	}
+	} //Cierre del método showCatalogue()
 	
+	/**
+	 * Método que modifica los datos personales
+	 */
 	public void modificarDatosPersonales() {
 		Scanner scUsuario = new Scanner(System.in);
 		int index = -1;
@@ -104,14 +127,17 @@ public class Usuario {
 		System.out.print("Introduzca la nueva dirección:\n->");
 		String nuevaDireccion = scUsuario.next();
 		this.direccion = nuevaDireccion;
-		//System.out.print(index);
+
 		listaUsers.get(index).setTelefono(nuevoTelefono);
 		listaUsers.get(index).setDireccion(nuevaDireccion);
 		
 		// Hacer la modificación en el archivo Json
 		AlmacenamientoDatos.escribirUsuariosJson(listaUsers);
-	}
+	} //Cierre del método modificarDatosPersonales()
 	
+	/**
+	 * Método que agrega productos al catálogo
+	 */
 	public void agregarProductoALaCesta() {
 		boolean existe = false;
 		ArrayList<Producto> listaProducts = AlmacenamientoDatos.leerCatalogoJson();
@@ -121,7 +147,7 @@ public class Usuario {
 		Scanner scUsuario = new Scanner(System.in);
 		String nombreProducto = scUsuario.next();
 		
-		// Bucle para comprobar si existe el producto que escribiste
+		// Bucle para comprobar si existe el producto escrito
 		for (int i = 0; i < listaProducts.size(); i++) {
 			if (nombreProducto.toUpperCase().equals(listaProducts.get(i).getNombre().toUpperCase())) {
 				Producto producto = listaProducts.get(i);
@@ -132,8 +158,12 @@ public class Usuario {
 			}
 		}
 		if (!existe) {System.out.println("- - - El producto escrito no existe - - -");}
-	}
+	} //Cierre del método agregarProductoALaCesta()
 	
+	/**
+	 * Método que muestra la cesta de productos
+	 * @return Cesta con productos
+	 */
 	public void verCesta(){
 		float subtotal = 0;
 		System.out.println("=========== CESTA DE " + nombre + " ===========");
@@ -153,8 +183,11 @@ public class Usuario {
 		System.out.print("=================================");
 		for (int i = 0; i < nombre.length(); i++) {System.out.print("=");}
 		System.out.println("\n");
-	}
+	} //Cierre del método verCesta()
 	
+	/**
+	 * Método que permite pagar la cesta de la compra
+	 */
 	public void pagarCesta() {
 		float total = 0;
 		ArrayList<Producto> listaProductosCesta = AlmacenamientoDatos.leerProductoCestaJson("Data/Cestas/CestaDe" + nombre + ".json");
@@ -202,45 +235,52 @@ public class Usuario {
 				
 			} else {System.out.println("- - - Operación Cancelada - - -");}
 		} else {System.out.println("- - - No hay productos en tu cesta - - -");}
-	}
+	} //Cierre del método pagarCesta()
 
-		// Getters
-	public String getNombre() {
-		return nombre;
-	}
+	/**
+	 * Método que te retorna el nombre del usuario
+	 * @return Nombre del usuario
+	 */
+	public String getNombre() {return nombre;}
 
-	public String getPsw() {
-		return psw;
-	}
+	/**
+	 * Método que te retorna la contraseña del usuario
+	 * @return Contraseña del usuario
+	 */
+	public String getPsw() {return psw;}
 
-	public String getDireccion() {
-		return direccion;
-	}
+	/**
+	 * Método que te retorna la dirección del usuario
+	 * @return Dirección del usuario
+	 */
+	public String getDireccion() {return direccion;}
 
-	public String getTelefono() {
-		return telefono;
-	}
+	/**
+	 * Método que te retorna el teléfono del usuario
+	 * @return Teléfono del usuario
+	 */
+	public String getTelefono() {return telefono;}
 	
+	/**
+	 * Método que te retorna las compras totales del usuario
+	 * @return Compras totales del usuario
+	 */
 	public int getComprasTotales() {return comprasTotales;}
 	
+	/**
+	 * Método que te retorna el total del dinero gastado por el usuario
+	 * @return Dinero gastado por el usuario
+	 */
 	public float getDineroGastado() {return dineroGastado;}
-	
-		// Setters
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-	
-	public void setPsw(String psw) {
-		this.psw = psw;
-	}
 
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
-	}
 	
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
-	}
+	public void setNombre(String nombre) {this.nombre = nombre;}
+	
+	public void setPsw(String psw) {this.psw = psw;}
+
+	public void setDireccion(String direccion) {this.direccion = direccion;}
+	
+	public void setTelefono(String telefono) {this.telefono = telefono;}
 	
 	public void setComprasTotales(int nuevasCompasTotales) {comprasTotales = nuevasCompasTotales;}
 	
